@@ -3,7 +3,7 @@ require('dotenv').config(); //dotenv has differemt method to require other commo
 const express = require('express');
 const expressLayout = require('express-ejs-layouts');
 const connectDB = require('./server/config/db');
-// const {flash} = require('express-flash-message');
+const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
 
@@ -13,9 +13,10 @@ const port = 5000 || process.env.PORT;  //5000 as our port or if we want to depl
 //Connect to database
 connectDB();
 
-
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(methodOverride('_method'));
+
 
 //Static Files--
 app.use(express.static('public'));
