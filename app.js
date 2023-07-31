@@ -46,6 +46,7 @@ app.set('layout', './layouts/main');
 app.set('view engine', 'ejs');
 
 
+
 //Routes
 app.use('/', require('./server/routes/customer'))
 

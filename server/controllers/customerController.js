@@ -1,6 +1,28 @@
 const Customer = require('../models/Customer');
 const mongoose = require('mongoose');
 
+// // GET/Homepage
+
+// exports.homepage = async(req,res) =>{
+
+//     const messages = await req.flash('info');
+
+//     const locals = {
+//         title : 'NodeJS',
+//         description : 'This is a NodeJs User Management System'
+//     }    
+
+//     try {
+//         const customers = await Customer.find({}).limit(22);  //the {} parameter finds ALL customer and the limit of no of customers is 22.
+//         res.render('index', { locals, messages, customers});  //renders our index.ejs paje no need to mention .ejs it is smart enough and passes locals var as a input which is then deconstructed by the ejs in main.ejs
+
+//     } catch (error) {
+//         console.log(error);
+//     }
+    
+// }
+
+
 
 // GET Homepage (updated)
 exports.homepage = async(req,res) =>{
@@ -86,6 +108,7 @@ exports.editPost = async (req,res) =>{
             updatedAt : Date.now()
         });
         // await res.redirect(`/edit/${req.params.id}`);
+        await res.redirect('/');
 
         console.log("redirected");
 
@@ -98,7 +121,9 @@ exports.editPost = async (req,res) =>{
 exports.deleteCustomer = async (req,res) =>{
     try {
         await Customer.deleteOne({ _id : req.params.id });
-        res.redirect("/")
+
+        // await req.flash('info', 'Customer has been deleted.')
+        res.redirect("/");
 
         console.log("redirected");
 
@@ -106,35 +131,6 @@ exports.deleteCustomer = async (req,res) =>{
         console.log(error);
     }
 }
-
-
-
-
-
-
-
-
-
-// // GET/Homepage
-
-// exports.homepage = async(req,res) =>{
-
-//     const messages = await req.flash('info');
-
-//     const locals = {
-//         title : 'NodeJS',
-//         description : 'This is a NodeJs User Management System'
-//     }    
-
-//     try {
-//         const customers = await Customer.find({}).limit(22);  //the {} parameter finds ALL customer and the limit of no of customers is 22.
-//         res.render('index', { locals, messages, customers});  //renders our index.ejs paje no need to mention .ejs it is smart enough and passes locals var as a input which is then deconstructed by the ejs in main.ejs
-
-//     } catch (error) {
-//         console.log(error);
-//     }
-    
-// }
 
 
 // GET/ New Customer
@@ -165,7 +161,8 @@ exports.postCustomer = async(req,res) =>{
 
     try {
         await Customer.create(newCustomer)
-        await req.flash('info', 'New customer has been added.')
+        await req.flash('info', 'New customer has been added.');
+        
         res.redirect('/');  
         
     } catch (error) {
