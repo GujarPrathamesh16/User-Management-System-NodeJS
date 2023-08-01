@@ -58,6 +58,25 @@ exports.homepage = async(req,res) =>{
     }
 };
 
+//GET method About
+
+exports.about = async(req,res) =>{
+    const locals = {
+        title : 'About',
+        description : 'This is about page for NodeJs User Management System'
+    }    
+
+    try {
+        
+        res.render('about', locals);  //renders our index.ejs paje no need to mention .ejs it is smart enough and passes locals var as a input which is then deconstructed by the ejs in main.ejs
+
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
 
 // GET Customer Data
 
@@ -169,4 +188,38 @@ exports.postCustomer = async(req,res) =>{
         console.log(error);
     }
     
+}
+
+
+
+
+
+
+// GET method / Search Customer
+exports.searchCustomers = async (req,res) =>{
+    const locals = {
+        title : 'Search Customer',
+        description : 'Searching customer in NodeJs User Management System'
+    }
+
+    try {
+        let searchTerm = req.body.searchTerm;
+        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g,"");  //to replace any special char with ""
+    
+        const customers = await Customer.find({
+            $or:[
+                {firstName : {$regex : new RegExp(searchNoSpecialChar, "i")}},
+                {lastName : {$regex : new RegExp(searchNoSpecialChar, "i")}},
+            ]
+        });
+        res.render('search',{
+            customers,
+            locals
+        })
+
+        console.log("redirected");
+
+    } catch (error) {
+        console.log(error);
+    }
 }
